@@ -8,6 +8,7 @@ export default function Home() {
   const [professores, setProfessores] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Função para buscar a lista de professores
   useEffect(() => {
     const fetchProfessores = async () => {
       try {
@@ -22,6 +23,19 @@ export default function Home() {
     fetchProfessores();
   }, []);
 
+  // Função para excluir o professor
+  const handleDelete = async (id) => {
+    if (window.confirm('Tem certeza que deseja excluir este professor?')) {
+      try {
+        await axios.delete(`http://localhost:3001/professor/${id}`);
+        // Atualiza a lista de professores após a exclusão
+        setProfessores(professores.filter((professor) => professor.id_professor !== id));
+      } catch (error) {
+        console.error('Erro ao excluir o professor:', error);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -33,7 +47,7 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Professores</h1>
-      <Link href="/novo"> 
+      <Link href="/novo">
         <button className="bg-green-500 text-white py-2 px-4 rounded mb-4">
           Novo
         </button>
@@ -62,16 +76,19 @@ export default function Home() {
                     : 'Divorciado(a)'}
                 </td>
                 <td className="border px-4 py-2">
-                  {new Date(professor.dt_nascimento).toLocaleDateString('pt-BR')}
+                  {new Date(professor.dt_nascimento).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
                 </td>
                 <td className="border px-4 py-2">{professor.tx_telefone}</td>
                 <td className="border px-4 py-2">
-                <Link href={`/editar/${professor.id_professor}`}>
-                  <button className="bg-blue-500 text-white py-1 px-2 rounded mr-2">
-                    Alterar
-                  </button>
-                </Link>
-                  <button className="bg-red-500 text-white py-1 px-2 rounded">
+                  <Link href={`/editar/${professor.id_professor}`}>
+                    <button className="bg-blue-500 text-white py-1 px-2 rounded mr-2">
+                      Alterar
+                    </button>
+                  </Link>
+                  <button
+                    className="bg-red-500 text-white py-1 px-2 rounded"
+                    onClick={() => handleDelete(professor.id_professor)} // Chama a função de exclusão
+                  >
                     Excluir
                   </button>
                 </td>
