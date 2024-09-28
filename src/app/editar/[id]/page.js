@@ -1,4 +1,4 @@
-'use client'; // Para permitir o uso de hooks no App Router
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation'; // Para navegar e obter o ID
@@ -41,13 +41,15 @@ export default function EditarProfessor() {
     }
   };
 
-  // Função para deletar o professor
+  // Função para deletar o professor, com confirmação
   const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:3001/professor/${id}`);
-      router.push('/'); // Redireciona para a página principal após a exclusão
-    } catch (error) {
-      console.error('Erro ao excluir professor:', error);
+    if (window.confirm('Tem certeza que deseja excluir este professor?')) {
+      try {
+        await axios.delete(`http://localhost:3001/professor/${id}`);
+        router.push('/'); // Redireciona para a página principal após a exclusão
+      } catch (error) {
+        console.error('Erro ao excluir professor:', error);
+      }
     }
   };
 
@@ -129,7 +131,7 @@ export default function EditarProfessor() {
 
         <button
           className="w-full mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-          onClick={handleDelete}
+          onClick={handleDelete} // Confirmação de exclusão
         >
           Deletar Professor
         </button>
