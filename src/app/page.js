@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';  // Importar o Link do Next.js
 
 export default function Home() {
   const [professores, setProfessores] = useState([]);
@@ -32,9 +33,11 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Professores</h1>
-      <button className="bg-green-500 text-white py-2 px-4 rounded mb-4">
-        Novo
-      </button>
+      <Link href="/novo"> 
+        <button className="bg-green-500 text-white py-2 px-4 rounded mb-4">
+          Novo
+        </button>
+      </Link>
       <table className="min-w-full table-auto">
         <thead>
           <tr>
