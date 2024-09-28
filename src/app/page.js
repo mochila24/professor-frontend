@@ -66,9 +66,11 @@ export default function Home() {
                 </td>
                 <td className="border px-4 py-2">{professor.tx_telefone}</td>
                 <td className="border px-4 py-2">
+                <Link href={`/editar/${professor.id_professor}`}>
                   <button className="bg-blue-500 text-white py-1 px-2 rounded mr-2">
                     Alterar
                   </button>
+                </Link>
                   <button className="bg-red-500 text-white py-1 px-2 rounded">
                     Excluir
                   </button>
